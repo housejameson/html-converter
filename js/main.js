@@ -12,36 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-/**
- * Load templates from files
- */
-async function loadTemplates() {
-    try {
-        // Fetch the FAQ template
-        const faqTemplateResponse = await fetch('templates/faq.html');
-        const faqTemplate = await faqTemplateResponse.text();
-        
-        // Store in template container
-        const templateContainer = document.getElementById('template-container');
-        const faqDiv = document.createElement('div');
-        faqDiv.id = 'faq-template';
-        faqDiv.innerHTML = faqTemplate;
-        templateContainer.appendChild(faqDiv);
-        
-        // Fetch the FAQ CSS
-        const faqCssResponse = await fetch('css/templates/faq.css');
-        const faqCss = await faqCssResponse.text();
-        
-        // Store CSS in template container
-        const faqCssDiv = document.createElement('div');
-        faqCssDiv.id = 'faq-template-css';
-        faqCssDiv.textContent = faqCss;
-        templateContainer.appendChild(faqCssDiv);
-        
-    } catch (error) {
-        console.error('Error loading templates:', error);
-    }
-}
+// The loadTemplates function is now in the template-manager.js file
 
 /**
  * Setup all event listeners
@@ -56,9 +27,16 @@ function setupEventListeners() {
     });
     
     // Clear input button
-    document.getElementById('clear-input-btn').addEventListener('click', function() {
-        document.getElementById('input-html').value = '';
-    });
+document.getElementById('clear-input-btn').addEventListener('click', function() {
+    // Clear the input
+    document.getElementById('input-html').value = '';
+    
+    // Also clear the output
+    document.getElementById('output-html').value = '';
+    
+    // Reset the preview
+    document.getElementById('preview-container').innerHTML = '<p>No content to preview</p>';
+});
     
     // Copy output button
     document.getElementById('copy-output-btn').addEventListener('click', function() {
@@ -67,8 +45,6 @@ function setupEventListeners() {
     
     // Automatically update the preview when output changes
     document.getElementById('output-html').addEventListener('input', debounce(updatePreview, 500));
-    
-    // Preview updates automatically, so no refresh button is needed
     
     // Color picker events
     document.getElementById('arrow-color').addEventListener('input', function() {
