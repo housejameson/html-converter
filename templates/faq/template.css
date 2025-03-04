@@ -1,0 +1,68 @@
+#faq-section {
+    margin-top: 6rem;
+    margin-bottom: auto;
+    margin-left: 2rem;
+    margin-right: 3rem;
+    padding: 1rem;
+  }
+  h2 {
+    padding: 1rem;
+    font-style: normal;
+  }
+  summary {
+    max-width: 100vw;
+    padding: .5rem 1rem;
+    text-align: left;
+    color: black;
+    font-family: LatoSemiBold, sans-serif;
+    line-height: 1.25;
+    margin: 0;
+    width: 100%;
+    font-size: 22px;
+    font-style: normal;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    position: relative;
+    padding-right:2.5ch;
+  }
+  p {
+    font-size: 16px;
+    font-style: normal;
+    padding: .001rem 1rem;
+  }
+  summary+p {
+    font-size: 16px;
+    font-style: normal;
+    padding: .5rem 1rem;
+  }
+  p+ul {
+    font-size: 16px;
+    font-style: normal;
+    padding: .5rem 2rem;
+  }
+  details[open] summary::after {
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+  }
+  summary::after {
+    scale: 2.0;
+    content: "«";
+    color: #ff0000;
+    transform: rotate(90deg);
+    transition: all .35s ease;
+    transform-origin: 48% 53%;
+    position: absolute;
+    right: 1ch;
+    top:10%;
+  }
+  details summary{margin-top:5px;margin-bottom:5px;}
+  details[open] summary {
+    background: var(--highlight-bg);
+  }
+  details summary::-webkit-details-marker,
+  details summary::marker {
+    display: none;
+    content: "";
+  }

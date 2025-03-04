@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Template Converter</title>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <h1>HTML Template Converter</h1>
+    
+    <!-- Dark mode toggle switch -->
+    <div class="theme-toggle">
+        <span class="theme-toggle-label">Theme:</span>
+        <label class="theme-switch">
+            <input type="checkbox" id="theme-toggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <div class="main-layout">
+        <div class="horizontal-controls">
+            <div class="template-selector">
+                <label for="template-select">Template: </label>
+                <select id="template-select">
+                    <option value="faq">FAQ Template</option>
+                    <!-- Additional templates will be added here -->
+                </select>
+            </div>
+            <div class="color-control">
+                <label for="arrow-color">Arrow Color:</label>
+                <input type="color" id="arrow-color" value="#ff0000">
+                <input type="text" id="arrow-color-text" value="#ff0000">
+            </div>
+        </div>
+
+        <div class="input-output-container">
+            <div class="section">
+                <div class="title-bar">
+                    <div class="section-title">Input HTML</div>
+                    <div class="button-group">
+                        <button id="convert-btn">Convert HTML to Template</button>
+                        <button class="secondary-button" id="clear-input-btn">Clear</button>
+                    </div>
+                </div>
+                <textarea id="input-html" placeholder="Paste your HTML content here..."></textarea>
+            </div>
+
+            <div class="section">
+                <div class="title-bar">
+                    <div class="section-title">Generated Output</div>
+                    <button class="secondary-button" id="copy-output-btn">Copy to Clipboard</button>
+                </div>
+                <textarea id="output-html" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="title-bar">
+                <div class="section-title">Live Preview</div>
+            </div>
+            <div class="preview-container" id="preview-container"></div>
+        </div>
+    </div>
+
+    <!-- Hidden template containers -->
+    <div id="template-container" style="display: none;"></div>
+    
+    <!-- Scripts -->
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/modules/converter.js"></script>
+    <script src="js/modules/preview.js"></script>
+    <script src="js/modules/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

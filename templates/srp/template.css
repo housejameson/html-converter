@@ -1,0 +1,53 @@
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px;
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .col-sm-12 {
+    width: 100%;
+  }
+  
+  .margin-bottom-1x {
+    margin-bottom: 1rem;
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    margin-bottom: 15px;
+  }
+  
+  h3 {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+  }
+  
+  p {
+    margin-bottom: 15px;
+    line-height: 1.5;
+  }
+  
+  ul {
+    margin-bottom: 15px;
+    padding-left: 25px;
+  }
+  
+  li {
+    margin-bottom: 8px;
+  }
+  
+  a {
+    color: #0066cc;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }

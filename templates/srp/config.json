@@ -1,0 +1,14 @@
+{
+    "name": "SRP Template",
+    "id": "srp",
+    "description": "A simple template for Search Results Page content",
+    "mappings": [
+      {
+        "from": "*",
+        "to": "*",
+        "action": "preserve",
+        "description": "Preserves all HTML tags as they are"
+      }
+    ],
+    "customization": []
+  }

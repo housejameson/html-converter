@@ -1,0 +1,30 @@
+{
+    "name": "FAQ Template",
+    "id": "faq",
+    "description": "A collapsible FAQ layout with expandable sections",
+    "mappings": [
+      {
+        "from": "h2",
+        "to": "h2 > b",
+        "action": "innerHTML",
+        "description": "Maps the main heading"
+      },
+      {
+        "from": "h3",
+        "to": "details > summary",
+        "action": "transform",
+        "description": "Converts h3 headings to collapsible summaries"
+      }
+    ],
+    "customization": [
+      {
+        "id": "arrow-color",
+        "name": "Arrow Color",
+        "type": "color",
+        "default": "#ff0000",
+        "target": "summary::after",
+        "property": "color",
+        "description": "Color of the dropdown arrow"
+      }
+    ]
+  }
