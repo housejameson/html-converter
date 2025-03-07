@@ -59,7 +59,7 @@
   }
   details summary{margin-top:5px;margin-bottom:5px;}
   details[open] summary {
-    background: var(--highlight-bg);
+    background: rgba(234, 234, 234, 0.949);
   }
   details summary::-webkit-details-marker,
   details summary::marker {
