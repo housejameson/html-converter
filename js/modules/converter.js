@@ -1,7 +1,7 @@
 /**
- * Convert HTML content to the template format
+ * Convert HTML content to the template format with CSS included
  * @param {string} htmlContent - Raw HTML content
- * @return {string} Converted HTML
+ * @return {string} Converted HTML with CSS
  */
 function convertHtmlToTemplate(htmlContent) {
     if (!htmlContent.trim()) {
@@ -22,15 +22,43 @@ function convertHtmlToTemplate(htmlContent) {
         const doc = parser.parseFromString(htmlContent, 'text/html');
         
         // Apply the appropriate conversion based on template
+        let convertedHtml;
         switch (templateId) {
             case 'faq':
-                return convertToFaqTemplate(doc, template);
+                convertedHtml = convertToFaqTemplate(doc, template);
+                break;
             case 'srp':
-                return convertToSrpTemplate(doc, template);
+                convertedHtml = convertToSrpTemplate(doc, template);
+                break;
             // Add cases for additional templates here
             default:
                 throw new Error(`Conversion not implemented for template ${templateId}`);
         }
+        
+        // Get the template CSS
+        const templateCssContainer = document.getElementById(`${templateId}-template-css`);
+        if (!templateCssContainer) {
+            throw new Error(`CSS for template ${templateId} not found`);
+        }
+        
+        let cssContent = templateCssContainer.textContent;
+        
+        // Apply any customizations to the CSS
+        switch (templateId) {
+            case 'faq':
+                cssContent = applyFaqCustomizations(cssContent);
+                break;
+            case 'srp':
+                // No customizations needed for SRP template yet
+                break;
+            // Add cases for additional templates here
+        }
+        
+        // Combine CSS and HTML
+        const output = `<style>\n${cssContent}\n</style>\n\n${convertedHtml}`;
+        
+        return output;
+        
     } catch (error) {
         console.error('Error converting HTML:', error);
         return 'Error converting HTML. Please check the console for details.';
