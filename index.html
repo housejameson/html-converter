@@ -62,6 +62,16 @@
             </div>
             <div class="preview-container" id="preview-container"></div>
         </div>
+
+        <div class="section schema-section" id="schema-section">
+            <div class="title-bar">
+                <div class="section-title">FAQ Schema Markup</div>
+                <button class="secondary-button" id="copy-schema-btn">Copy Schema</button>
+            </div>
+            <div class="schema-container">
+                <pre id="schema-display" class="schema-display">No schema generated yet. Convert your FAQ content first.</pre>
+            </div>
+        </div>
     </div>
 
     <!-- Hidden template containers -->
@@ -70,6 +80,7 @@
     <!-- Scripts -->
     <script src="js/utils/helpers.js"></script>
     <script src="js/modules/template-manager.js"></script>
+    <script src="js/modules/schema-generator.js"></script>
     <script src="js/modules/converter.js"></script>
     <script src="js/modules/preview.js"></script>
     <script src="js/modules/ui.js"></script>
