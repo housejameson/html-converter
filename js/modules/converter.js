@@ -1,7 +1,7 @@
 /**
- * Convert HTML content to the template format
+ * Convert HTML content to the template format with CSS included
  * @param {string} htmlContent - Raw HTML content
- * @return {string} Converted HTML
+ * @return {string} Converted HTML with CSS
  */
 function convertHtmlToTemplate(htmlContent) {
     if (!htmlContent.trim()) {
@@ -22,15 +22,50 @@ function convertHtmlToTemplate(htmlContent) {
         const doc = parser.parseFromString(htmlContent, 'text/html');
         
         // Apply the appropriate conversion based on template
+        let convertedHtml;
         switch (templateId) {
             case 'faq':
-                return convertToFaqTemplate(doc, template);
+                convertedHtml = convertToFaqTemplate(doc, template);
+                break;
             case 'srp':
-                return convertToSrpTemplate(doc, template);
+                convertedHtml = convertToSrpTemplate(doc, template);
+                break;
             // Add cases for additional templates here
             default:
                 throw new Error(`Conversion not implemented for template ${templateId}`);
         }
+        
+        // Get the template CSS
+        const templateCssContainer = document.getElementById(`${templateId}-template-css`);
+        if (!templateCssContainer) {
+            throw new Error(`CSS for template ${templateId} not found`);
+        }
+        
+        let cssContent = templateCssContainer.textContent;
+        
+        // Apply any customizations to the CSS
+        switch (templateId) {
+            case 'faq':
+                cssContent = applyFaqCustomizations(cssContent);
+                break;
+            case 'srp':
+                // No customizations needed for SRP template yet
+                break;
+            // Add cases for additional templates here
+        }
+        
+        // Combine CSS and HTML, but only include style tag for FAQ template
+        let output;
+        if (templateId === 'srp') {
+            // For SRP template, return only the HTML without style tags
+            output = convertedHtml;
+        } else {
+            // For all other templates (including FAQ), include the style tags
+            output = `<style>\n${cssContent}\n</style>\n\n${convertedHtml}`;
+        }
+        
+        return output;
+        
     } catch (error) {
         console.error('Error converting HTML:', error);
         return 'Error converting HTML. Please check the console for details.';
@@ -66,63 +101,51 @@ function convertToFaqTemplate(doc, template) {
         // Add the summary to the details
         details.appendChild(summary);
         
-        // Check if there's a paragraph after the h3
-        let nextElement = h3.nextElementSibling;
-        let paragraphAdded = false;
+        // Determine if this is the last h3
+        const isLastH3 = index === h3Elements.length - 1;
         
-        // If there's a paragraph after the h3, add it to the details
-        if (nextElement && nextElement.tagName.toLowerCase() === 'p') {
-            const p = nextElement.cloneNode(true);
-            details.appendChild(p);
-            nextElement.remove();  // Remove the original paragraph
-            paragraphAdded = true;
-        } else {
-            // Look for text content directly after the h3 or until the next h3
-            let textContent = '';
-            let currentNode = h3.nextSibling;
+        // Find the next h3 element (if any)
+        const nextH3 = isLastH3 ? null : h3Elements[index + 1];
+        
+        // Collect all content between this h3 and the next h3 (or end of document)
+        let currentNode = h3.nextSibling;
+        let contentAdded = false;
+        
+        while (currentNode && currentNode !== nextH3) {
+            // Create a clone of the current node to add to details
+            let nodeToAdd = null;
             
-            // If we're at the last h3, collect all remaining content
-            if (index === h3Elements.length - 1) {
-                while (currentNode) {
-                    if (currentNode.nodeType === Node.TEXT_NODE) {
-                        textContent += currentNode.textContent;
-                    } else if (currentNode.nodeType === Node.ELEMENT_NODE && 
-                              currentNode.tagName.toLowerCase() !== 'h3') {
-                        textContent += currentNode.outerHTML;
-                    }
-                    let nextNode = currentNode.nextSibling;
-                    currentNode.parentNode.removeChild(currentNode);
-                    currentNode = nextNode;
+            if (currentNode.nodeType === Node.TEXT_NODE) {
+                // If it's a text node with non-whitespace content, wrap it in a paragraph
+                if (currentNode.textContent.trim()) {
+                    const p = document.createElement('p');
+                    p.textContent = currentNode.textContent.trim();
+                    nodeToAdd = p;
                 }
-            } else {
-                // For h3s in the middle, collect until the next h3
-                const nextH3 = h3Elements[index + 1];
-                while (currentNode && currentNode !== nextH3) {
-                    if (currentNode.nodeType === Node.TEXT_NODE) {
-                        textContent += currentNode.textContent;
-                    } else if (currentNode.nodeType === Node.ELEMENT_NODE && 
-                              currentNode.tagName.toLowerCase() !== 'h3') {
-                        textContent += currentNode.outerHTML;
-                    }
-                    let nextNode = currentNode.nextSibling;
-                    if (currentNode !== nextH3) {
-                        currentNode.parentNode.removeChild(currentNode);
-                    }
-                    currentNode = nextNode;
-                }
+            } else if (currentNode.nodeType === Node.ELEMENT_NODE) {
+                // For element nodes, clone them
+                nodeToAdd = currentNode.cloneNode(true);
             }
             
-            // If we found any content, create a paragraph for it
-            if (textContent.trim()) {
-                const p = document.createElement('p');
-                p.innerHTML = textContent.trim();
-                details.appendChild(p);
-                paragraphAdded = true;
+            // Add the node to details if it exists
+            if (nodeToAdd) {
+                details.appendChild(nodeToAdd);
+                contentAdded = true;
             }
+            
+            // Get the next sibling before removing this node
+            let nextNode = currentNode.nextSibling;
+            
+            // Remove the current node from the original document
+            if (currentNode.parentNode) {
+                currentNode.parentNode.removeChild(currentNode);
+            }
+            
+            currentNode = nextNode;
         }
         
-        // If no paragraph was added, create an empty one to maintain structure
-        if (!paragraphAdded) {
+        // If no content was added, create an empty paragraph
+        if (!contentAdded) {
             const p = document.createElement('p');
             p.innerHTML = 'No description available.';
             details.appendChild(p);
