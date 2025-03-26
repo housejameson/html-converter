@@ -21,7 +21,7 @@
         "id": "arrow-color",
         "name": "Arrow Color",
         "type": "color",
-        "default": "#ff0000",
+        "default": "#000000",
         "target": "summary::after",
         "property": "color",
         "description": "Color of the dropdown arrow"
