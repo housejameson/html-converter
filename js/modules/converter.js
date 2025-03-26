@@ -94,6 +94,11 @@ function convertToFaqTemplate(doc, template) {
         // Create a new details element
         const details = document.createElement('details');
         
+        // Make the first details element open by default
+        if (index === 0) {
+            details.setAttribute('open', '');
+        }
+        
         // Create a new summary element with the content of the h3
         const summary = document.createElement('summary');
         summary.innerHTML = h3.innerHTML;
